@@ -98,8 +98,20 @@ class PaperExtractorPlayer(Player):
             observation (List[Message]): The messages that the player has observed from the environment.
 
         Returns:
-            str: The action (response) of the player.
+            str: The action (response) of the paper.
         """
+        # Check if paper_text is directly provided
+        if hasattr(self, 'paper_text') and self.paper_text:
+            logging.info(f"Using provided paper text (length: {len(self.paper_text)} chars)")
+            # Apply word limit if needed
+            text = self.paper_text.split(' ')
+            if len(text) > self.args.max_num_words:
+                text = text[:self.args.max_num_words]
+            main_contents = "Contents of this paper:\n\n" + " ".join(text)
+            print(main_contents)
+            return main_contents
+
+        # Otherwise, load from PDF
         if self.paper_pdf_path is not None:
             logging.info(f"Loading paper from {self.paper_pdf_path} ...")
         else:
@@ -127,7 +139,7 @@ class PaperExtractorPlayer(Player):
             main_contents += text + ' '
             if FLAG:
                 break
-        
+
         print(main_contents)
-        
+
         return main_contents

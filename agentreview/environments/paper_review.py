@@ -3,7 +3,7 @@ import logging
 import os.path as osp
 from typing import List
 
-from agentreview.environments import Conversation
+from .conversation import Conversation
 from agentreview.utility.utils import get_rebuttal_dir
 from .base import TimeStep
 from ..message import Message
